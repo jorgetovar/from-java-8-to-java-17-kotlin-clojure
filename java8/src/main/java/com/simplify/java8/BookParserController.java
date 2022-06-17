@@ -1,6 +1,6 @@
 package com.simplify.java8;
 
-import com.simplify.java8.service.BookParser;
+import com.simplify.java8.book.BookParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
