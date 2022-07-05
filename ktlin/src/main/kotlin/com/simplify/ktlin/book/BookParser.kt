@@ -19,7 +19,7 @@ class BookParser {
     fun convertCsvToJson(inputCsv: String, outputJson: String): String {
 
         val lines = File(inputCsv).bufferedReader().readLines()
-        val jsonList: List<String> = lines.map {
+        return lines.map {
             it.split(",")
         }.map {
             val title = it[CsvColumns.TITLE.ordinal]
@@ -46,8 +46,8 @@ class BookParser {
             "eBook":${BookInOReally.available(book)},
             "category":"$category"}
             """.oneLiner()
-        }
-        return jsonList.toString()
+        }.toString()
+
 
     }
 }
