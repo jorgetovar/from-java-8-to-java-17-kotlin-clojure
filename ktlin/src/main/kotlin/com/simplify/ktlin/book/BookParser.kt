@@ -26,27 +26,15 @@ class BookParser {
             val author = it[CsvColumns.AUTHOR.ordinal]
             val pages = it[CsvColumns.PAGES.ordinal].toInt()
             val category = Category.valueOf(it[CsvColumns.CATEGORY.ordinal])
-            val karma = when (category) {
+            val (karma, book) = when (category) {
                 Category.fiction -> {
-                    25
+                    Pair(25, Book.FictionBook(title, author))
                 }
                 Category.programming -> {
-                    40
+                    Pair(40, Book.ProgrammingBook(title, author))
                 }
                 Category.psychological -> {
-                    30
-                }
-            }
-
-            val book = when (category) {
-                Category.fiction -> {
-                    Book.FictionBook(title, author)
-                }
-                Category.programming -> {
-                    Book.ProgrammingBook(title, author)
-                }
-                Category.psychological -> {
-                    Book.PsychologicalBook(title, author)
+                    Pair(30, Book.PsychologicalBook(title, author))
                 }
             }
 
