@@ -7,32 +7,39 @@ import java.nio.file.Paths
 
 class KtlinApplicationTests {
 
+    fun String.oneLiner(): String = this.trimIndent().replace("\n", "")
+
     @Test
     fun testConvertCsvToJson_WhenIsAProgrammingBook() {
         val expected = """
-			[{"title":"Code Complete",
-			   "author":"Steve McConnell",
-			   "pages":960,
-			   "karma":40,
-			   "eBook":true,
-			   "category":"programming"}]
-                """.trimIndent().replace("\n", "")
+            [{"title":"Code Complete",
+            "author":"Steve McConnell"
+            ,"pages":960,
+            "karma":40,"eBook":true,
+            "category":"programming"}]
+            """.oneLiner()
         val currentRelativePath = Paths.get("src/test/resources")
-        val actual: String = BookParser().convertCsvToJson("$currentRelativePath/programming-test.csv", "$currentRelativePath/programming-test.json")
+        val actual: String = BookParser().convertCsvToJson(
+            "$currentRelativePath/programming-test.csv",
+            "$currentRelativePath/programming-test.json"
+        )
         Assertions.assertEquals(expected, actual)
     }
 
     @Test
     fun testConvertCsvToJson_WhenIsAFictionBook() {
         val expected = """
-		  [{"title":"Book Lovers",
+            [{"title":"Book Lovers",
             "author":"Emily Henry",
             "pages":1220,"karma":25,
             "eBook":false,
             "category":"fiction"}]
-            """.trimIndent().replace("\n", "")
+            """.oneLiner()
         val currentRelativePath = Paths.get("src/test/resources")
-        val actual: String = BookParser().convertCsvToJson("$currentRelativePath/fiction-test.csv", "$currentRelativePath/fiction-test.json")
+        val actual: String = BookParser().convertCsvToJson(
+            "$currentRelativePath/fiction-test.csv",
+            "$currentRelativePath/fiction-test.json"
+        )
         Assertions.assertEquals(expected, actual)
     }
 
