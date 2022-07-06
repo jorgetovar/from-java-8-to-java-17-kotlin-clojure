@@ -3,14 +3,11 @@ package com.simplify.java17.book;
 public class BookInOReally {
 
     public static boolean available(Book book) {
-        if (book instanceof FictionBook) {
-            return ((FictionBook) book).available();
-        } else if (book instanceof ProgrammingBook) {
-            return ((ProgrammingBook) book).exists();
-        } else if (book instanceof PsychologicalBook) {
-            return ((PsychologicalBook) book).imAAvailable();
-        } else {
-            return false;
-        }
+        return switch (book) {
+            case FictionBook fictionBook -> fictionBook.available();
+            case ProgrammingBook programmingBook -> programmingBook.exists();
+            case PsychologicalBook psychologicalBook -> psychologicalBook.imAAvailable();
+            case null, default -> false;
+        };
     }
 }
