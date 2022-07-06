@@ -36,23 +36,23 @@ public class BookParser {
                 var title = csvFields[CsvColumns.TITLE.ordinal()];
                 var author = csvFields[CsvColumns.AUTHOR.ordinal()];
                 var pages = Integer.parseInt(csvFields[CsvColumns.PAGES.ordinal()]);
-                Category category = Category.valueOf(csvFields[CsvColumns.CATEGORY.ordinal()]);
+                var category = Category.valueOf(csvFields[CsvColumns.CATEGORY.ordinal()]);
                 var karma = 0;
-                Book book = null;
-                switch (category) {
+
+                var book = switch (category) {
                     case fiction -> {
                         karma = 25;
-                        book = new FictionBook(title, author);
+                        yield new FictionBook(title, author);
                     }
                     case programming -> {
                         karma = 40;
-                        book = new ProgrammingBook(title, author);
+                        yield new ProgrammingBook(title, author);
                     }
                     case psychological -> {
                         karma = 30;
-                        book = new PsychologicalBook(title, author);
+                        yield new PsychologicalBook(title, author);
                     }
-                }
+                };
 
                 json += """
                         {"title":"%s",

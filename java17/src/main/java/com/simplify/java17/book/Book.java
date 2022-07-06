@@ -1,7 +1,6 @@
 package com.simplify.java17.book;
 
 public sealed class Book permits FictionBook, ProgrammingBook, PsychologicalBook {
-
     String title;
     String author;
 
