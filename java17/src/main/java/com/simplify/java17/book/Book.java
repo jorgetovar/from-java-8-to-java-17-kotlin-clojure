@@ -1,6 +1,7 @@
 package com.simplify.java17.book;
 
-public class Book {
+public sealed class Book permits FictionBook, ProgrammingBook, PsychologicalBook {
+
     String title;
     String author;
 
@@ -25,4 +26,7 @@ public class Book {
         this.author = author;
     }
 }
+
+
+
 

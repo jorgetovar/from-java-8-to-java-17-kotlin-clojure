@@ -9,7 +9,8 @@ public class BookInOReally {
             return ((ProgrammingBook) book).exists();
         } else if (book instanceof PsychologicalBook) {
             return ((PsychologicalBook) book).imAAvailable();
+        } else {
+            return false;
         }
-        return false;
     }
 }
