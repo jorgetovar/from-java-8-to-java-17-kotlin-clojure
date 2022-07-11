@@ -14,9 +14,11 @@ class Java17ApplicationTests {
 
         var expected = """
             [{"title":"Code Complete",
-            "author":"Steve McConnell"
-            ,"pages":960,
-            "karma":40,"eBook":true,
+            "author":"Steve McConnell",
+            "pages":960,
+            "karma":40,
+            "eBook":true,
+            "rate":3.83,
             "category":"programming"}]
             """.replace("\n", "");;
         var currentRelativePath = Paths.get("src/test/resources");
@@ -31,8 +33,10 @@ class Java17ApplicationTests {
         var expected = """
             [{"title":"Book Lovers",
             "author":"Emily Henry",
-            "pages":1220,"karma":25,
+            "pages":1220,
+            "karma":25,
             "eBook":false,
+            "rate":4.00,
             "category":"fiction"}]
             """.replace("\n", "");;
         var currentRelativePath = Paths.get("src/test/resources");
