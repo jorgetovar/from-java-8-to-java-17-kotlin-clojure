@@ -2,6 +2,8 @@ package com.simplify.ktlin.book
 
 import org.springframework.stereotype.Service
 import java.io.File
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Service
 class BookParser {
@@ -50,7 +52,20 @@ class BookParser {
                 "pages":$pages,
                 "karma":$karma,
                 "eBook":${BookInOReally.available(book)},
+                "rate":${getRate(it)},
                 "category":"$category"}
                 """.oneLiner()
+    }
+
+    private fun isNumeric(str: String): Boolean {
+        return str.toDoubleOrNull() != null
+    }
+
+    private fun getRate(rates: List<String>): BigDecimal {
+        val sum = rates
+            .filter { this.isNumeric(it) }
+            .map { it.toDouble() }
+            .filter { it in 0.0..5.0 }.sum()
+        return BigDecimal(sum / 3).setScale(2, RoundingMode.HALF_UP)
     }
 }

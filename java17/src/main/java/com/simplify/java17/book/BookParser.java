@@ -7,6 +7,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Arrays;
 
 @Service
 public class BookParser {
@@ -41,6 +44,7 @@ public class BookParser {
         return json.replace("\n", "");
     }
 
+
     private String createJsonRecord(String csvLine, String json) {
         String[] csvFields;
         csvFields = csvLine.split(",");
@@ -72,8 +76,32 @@ public class BookParser {
                 "pages":%s,
                 "karma":%s,
                 "eBook":%s,
-                "category":"%s"},""".formatted(title, author, pages, karma, BookInOReally.available(book), category);
+                "rate":%s,
+                "category":"%s"},""".formatted(title, author, pages,
+                karma, BookInOReally.available(book), getRate(csvFields), category);
         return json;
+    }
+
+    private boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    private BigDecimal getRate(String[] csvFields) {
+
+        var sum = Arrays.stream(csvFields)
+                .filter(this::isNumeric)
+                .mapToDouble(Double::valueOf)
+                .filter(e -> e <= 5 && e >= 0)
+                .sum();
+        return new BigDecimal(sum / 3).setScale(2, RoundingMode.HALF_UP);
     }
 
 }

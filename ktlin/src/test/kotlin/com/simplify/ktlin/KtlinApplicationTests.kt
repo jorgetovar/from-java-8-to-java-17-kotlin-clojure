@@ -3,11 +3,13 @@ package com.simplify.ktlin
 import com.simplify.ktlin.book.BookParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class KtlinApplicationTests {
 
     private fun String.oneLiner(): String = this.trimIndent().replace("\n", "")
+    private val currentRelativePath: Path = Paths.get("src/test/resources")
 
     @Test
     fun testConvertCsvToJson_WhenIsAProgrammingBook() {
@@ -15,10 +17,11 @@ class KtlinApplicationTests {
             [{"title":"Code Complete",
             "author":"Steve McConnell"
             ,"pages":960,
-            "karma":40,"eBook":true,
+            "karma":40,
+            "eBook":true,
+            "rate":3.83,
             "category":"programming"}]
             """.oneLiner()
-        val currentRelativePath = Paths.get("src/test/resources")
         val actual: String = BookParser().convertCsvToJson(
             "$currentRelativePath/programming-test.csv",
             "$currentRelativePath/programming-test.json"
@@ -33,9 +36,10 @@ class KtlinApplicationTests {
             "author":"Emily Henry",
             "pages":1220,"karma":25,
             "eBook":false,
+            "rate":4.00,
             "category":"fiction"}]
             """.oneLiner()
-        val currentRelativePath = Paths.get("src/test/resources")
+
         val actual: String = BookParser().convertCsvToJson(
             "$currentRelativePath/fiction-test.csv",
             "$currentRelativePath/fiction-test.json"

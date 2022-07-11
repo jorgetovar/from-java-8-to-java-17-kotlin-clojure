@@ -16,7 +16,7 @@ class Java8ApplicationTests {
         String expected = "[{\"title\":\"Code Complete\"," +
                 "\"author\":\"Steve McConnell\"," +
                 "\"pages\":960," + "\"karma\":40," +
-                "\"eBook\":true," +
+                "\"eBook\":true," + "\"rate\":3.83," +
                 "\"category\":\"programming\"}]";
         Path currentRelativePath = Paths.get("src/test/resources");
         String actual = new BookParser().convertCsvToJson(currentRelativePath + "/programming-test.csv",
@@ -30,7 +30,7 @@ class Java8ApplicationTests {
         String expected = "[{\"title\":\"Book Lovers\"," +
                 "\"author\":\"Emily Henry\"," +
                 "\"pages\":1220," + "\"karma\":25," +
-                "\"eBook\":false," +
+                "\"eBook\":false," + "\"rate\":4.00," +
                 "\"category\":\"fiction\"}]";
         Path currentRelativePath = Paths.get("src/test/resources");
         String actual = new BookParser().convertCsvToJson(currentRelativePath + "/fiction-test.csv",
