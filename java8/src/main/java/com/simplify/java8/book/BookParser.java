@@ -32,39 +32,8 @@ public class BookParser {
         try (BufferedReader csvReader = new BufferedReader(new FileReader(inputCsv));
              BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(outputJson))) {
 
-            String[] csvFields;
-
             while ((csvLine = csvReader.readLine()) != null) {
-                csvFields = csvLine.split(",");
-
-                String title = csvFields[TITLE.ordinal()];
-                String author = csvFields[AUTHOR.ordinal()];
-                int pages = Integer.parseInt(csvFields[PAGES.ordinal()]);
-                Category category = Category.valueOf(csvFields[CATEGORY.ordinal()]);
-                int karma = 0;
-                Book book = null;
-                switch (category) {
-                    case fiction:
-                        karma = 25;
-                        book = new FictionBook(title, author);
-                        break;
-                    case programming:
-                        karma = 40;
-                        book = new ProgrammingBook(title, author);
-                        break;
-                    case psychological:
-                        karma = 30;
-                        book = new PsychologicalBook(title, author);
-                        break;
-                }
-                json += "{";
-                json += "\"title\":\"" + title + "\",";
-                json += "\"author\":\"" + author + "\",";
-                json += "\"pages\":" + pages + ",";
-                json += "\"karma\":" + karma + ",";
-                json += "\"eBook\":" + BookInOReally.available(book) + ",";
-                json += "\"category\":\"" + category + "\"";
-                json += "},";
+                json = createJsonRecord(csvLine, json);
             }
             json = json.substring(0, json.length() - 1);
             json += "]";
@@ -75,6 +44,41 @@ public class BookParser {
             e.printStackTrace();
         }
 
+        return json;
+    }
+
+    private String createJsonRecord(String csvLine, String json) {
+        String[] csvFields;
+        csvFields = csvLine.split(",");
+
+        String title = csvFields[TITLE.ordinal()];
+        String author = csvFields[AUTHOR.ordinal()];
+        int pages = Integer.parseInt(csvFields[PAGES.ordinal()]);
+        Category category = Category.valueOf(csvFields[CATEGORY.ordinal()]);
+        int karma = 0;
+        Book book = null;
+        switch (category) {
+            case fiction:
+                karma = 25;
+                book = new FictionBook(title, author);
+                break;
+            case programming:
+                karma = 40;
+                book = new ProgrammingBook(title, author);
+                break;
+            case psychological:
+                karma = 30;
+                book = new PsychologicalBook(title, author);
+                break;
+        }
+        json += "{";
+        json += "\"title\":\"" + title + "\",";
+        json += "\"author\":\"" + author + "\",";
+        json += "\"pages\":" + pages + ",";
+        json += "\"karma\":" + karma + ",";
+        json += "\"eBook\":" + BookInOReally.available(book) + ",";
+        json += "\"category\":\"" + category + "\"";
+        json += "},";
         return json;
     }
 

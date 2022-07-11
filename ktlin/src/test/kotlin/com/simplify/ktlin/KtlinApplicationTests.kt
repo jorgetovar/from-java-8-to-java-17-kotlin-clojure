@@ -7,7 +7,7 @@ import java.nio.file.Paths
 
 class KtlinApplicationTests {
 
-    fun String.oneLiner(): String = this.trimIndent().replace("\n", "")
+    private fun String.oneLiner(): String = this.trimIndent().replace("\n", "")
 
     @Test
     fun testConvertCsvToJson_WhenIsAProgrammingBook() {
