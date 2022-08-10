@@ -50,7 +50,7 @@ jobs:
       image: 'ubuntu-2004:current'
     steps:
       - checkout
-      - qodana:
+      - qodana-call:
         - run: qodana/scan
 workflows:
   main:
