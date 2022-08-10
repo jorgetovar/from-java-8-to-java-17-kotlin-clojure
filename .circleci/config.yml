@@ -46,7 +46,7 @@ jobs:
       # run tests!
       - run: ls
       - run: cd java8 && ./gradlew clean build
- code-quality:
+  code-quality:
     machine:
       image: 'ubuntu-2004:current'
     steps:
