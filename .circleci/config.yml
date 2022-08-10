@@ -44,14 +44,14 @@ jobs:
           key: v1-dependencies-{{ checksum "java8/build.gradle" }}
 
       # run tests!
-      - run: ls
       - run: cd java8 && ./gradlew clean build
   code-quality:
     machine:
       image: 'ubuntu-2004:current'
     steps:
       - checkout
-      - qodana/scan
+      - qodana:
+        - run: qodana/scan
 workflows:
   main:
     jobs:
