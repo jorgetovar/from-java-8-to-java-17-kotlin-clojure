@@ -50,9 +50,7 @@ jobs:
       image: 'ubuntu-2004:current'
     steps:
       - checkout
-      - run: cd java8
-      - run: ls  
-      - qodana/scan
+      - qodana/scan -i java8
 workflows:
   main:
     jobs:
