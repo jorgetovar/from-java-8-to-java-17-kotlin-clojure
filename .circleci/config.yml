@@ -30,14 +30,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
+            - java8/v1-dependencies-{{ checksum "build.gradle" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - java8/v1-dependencies-
 
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: java8/v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
       - run: ls
