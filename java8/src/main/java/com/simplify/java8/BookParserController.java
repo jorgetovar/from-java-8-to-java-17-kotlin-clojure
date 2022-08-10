@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookParserController {
 
-    private final BookParser bookParser;
+    private BookParser bookParser;
 
     public BookParserController(BookParser bookParser) {
         this.bookParser = bookParser;
@@ -17,6 +17,7 @@ public class BookParserController {
 
     @GetMapping("/csv-to-json")
     public BookResponse convertCsvToJson(@RequestParam String inputCsv, @RequestParam String outputJson) {
+        String x = "Unused variable";
         return new BookResponse(bookParser.convertCsvToJson(inputCsv, outputJson), 1.0d);
     }
 
