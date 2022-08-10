@@ -1,6 +1,8 @@
 # Java Gradle CircleCI 2.0 configuration file
 # See: https://circleci.com/docs/2.0/language-java/
-version: 2
+version: 2.1
+orbs: 
+  qodana: jetbrains/qodana@2022.2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -42,4 +44,15 @@ jobs:
       # run tests!
       - run: ls
       - run: cd java8 && ./gradlew clean build
-      - run: ls
+ code-quality:
+    machine:
+      image: 'ubuntu-2004:current'
+    steps:
+      - checkout
+      - qodana/scan
+workflows:
+  main:
+    jobs:
+      - build
+      - code-quality:
+          context: qodana
