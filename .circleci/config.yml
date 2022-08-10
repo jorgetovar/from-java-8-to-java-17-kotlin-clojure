@@ -27,8 +27,6 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run: cd java8
-
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -43,4 +41,5 @@ jobs:
 
       # run tests!
       - run: ls
-      - run: ./gradlew clean build
+      - run: cd java8 && ./gradlew clean build
+      - run: ls
