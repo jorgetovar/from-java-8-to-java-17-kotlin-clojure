@@ -51,7 +51,8 @@ jobs:
     steps:
       - checkout
       - qodana/scan:
-         - i: "java8"
+        i:
+          "java8"
         
 workflows:
   main:
