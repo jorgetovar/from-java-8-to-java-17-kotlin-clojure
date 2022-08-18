@@ -3,7 +3,7 @@
             [clj-11.core :refer :all]
             [clojure.test :refer :all]))
 
-(deftest test-csv->json-with-valid-file
+(deftest test-csv-json-with-valid-file
 
   (testing "Generate EDN based on file"
     (is (= {:author   "Steve McConnell"
