@@ -98,3 +98,7 @@ var book = switch (category) {
 ```
 
 These features have been introduced to make Java code more expressive and readable while reducing boilerplate code. You can choose the appropriate feature based on your project's requirements and Java version.
+
+## Conclusion
+
+While I believe that Java 17 and its new releases are undeniably impressive, I can't help but acknowledge that Kotlin offers a multitude of features that enhance the developer experience and make coding more enjoyable. Clojure, on the other hand, has been a revelation for me, highlighting that you don't necessarily need classes and object-oriented programming to elegantly solve complex business logic challenges. It's a reminder that diverse programming languages can offer unique perspectives and solutions.
