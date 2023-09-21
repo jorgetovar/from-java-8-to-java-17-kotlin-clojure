@@ -1,5 +1,5 @@
 
-# Java new features 8 -> 17 and comparasion with Kotlin and Clojure
+# Java Evolution: From Java 8 to Java 17, Compared with Kotlin and Clojure
 
 This README provides a brief overview and code examples of some notable Java language features introduced in recent versions of Java. Each section corresponds to a specific feature.
 
@@ -27,14 +27,14 @@ Java introduced pattern matching in later versions, enhancing the way you work w
 
 ```java
 // Pattern Matching in Java
-    public static boolean available(Book book) {
-        return switch (book) {
-            case FictionBook fictionBook -> fictionBook.available();
-            case ProgrammingBook programmingBook -> programmingBook.exists();
-            case PsychologicalBook psychologicalBook -> psychologicalBook.imAAvailable();
-            case null, default -> false;
-        };
-    }
+public static boolean available(Book book) {
+    return switch (book) {
+        case FictionBook fictionBook -> fictionBook.available();
+        case ProgrammingBook programmingBook -> programmingBook.exists();
+        case PsychologicalBook psychologicalBook -> psychologicalBook.imAAvailable();
+        case null, default -> false;
+    };
+}
 ```
 
 ## Records
@@ -43,10 +43,10 @@ Records, introduced in Java 16, provide a compact way to declare classes that ar
 
 ```java
 // Java Record
-    public record BookResponse(String json, Double version) {
-    }
-    BookResponse bookResponse = new BookResponse("{}", 2d);
-    System.out.println(bookResponse); // Automatically calls toString()
+public record BookResponse(String json, Double version) {
+}
+BookResponse bookResponse = new BookResponse("{}", 2d);
+System.out.println(bookResponse); // Automatically calls toString()
 ```
 
 ## Sealed Classes
@@ -55,7 +55,7 @@ Java introduced sealed classes to restrict which other classes or interfaces may
 
 ```java
 // Sealed Class in Java
-    public sealed class Book permits FictionBook, ProgrammingBook, PsychologicalBook 
+public sealed class Book permits FictionBook, ProgrammingBook, PsychologicalBook 
 ```
 
 ## Text Blocks
@@ -64,15 +64,15 @@ Text Blocks, available from Java 13 onwards, simplify working with multi-line st
 
 ```java
 // Java Text Block
-    json += """
-            {"title":"%s",
-            "author":"%s",
-            "pages":%s,
-            "karma":%s,
-            "eBook":%s,
-            "rate":%s,
-            "category":"%s"}
-            """
+json += """
+        {"title":"%s",
+        "author":"%s",
+        "pages":%s,
+        "karma":%s,
+        "eBook":%s,
+        "rate":%s,
+        "category":"%s"}
+        """
 ```
 
 ## Switch Expressions
@@ -81,20 +81,20 @@ Java introduced switch expressions in Java 12. They allow you to use a switch st
 
 ```java
 // Java Switch Expression
-    var book = switch (category) {
-        case fiction -> {
-            karma = 25;
-            yield new FictionBook(title, author);
-        }
-        case programming -> {
-            karma = 40;
-            yield new ProgrammingBook(title, author);
-        }
-        case psychological -> {
-            karma = 30;
-            yield new PsychologicalBook(title, author);
-        }
-    };
+var book = switch (category) {
+    case fiction -> {
+        karma = 25;
+        yield new FictionBook(title, author);
+    }
+    case programming -> {
+        karma = 40;
+        yield new ProgrammingBook(title, author);
+    }
+    case psychological -> {
+        karma = 30;
+        yield new PsychologicalBook(title, author);
+    }
+};
 ```
 
 These features have been introduced to make Java code more expressive and readable while reducing boilerplate code. You can choose the appropriate feature based on your project's requirements and Java version.
