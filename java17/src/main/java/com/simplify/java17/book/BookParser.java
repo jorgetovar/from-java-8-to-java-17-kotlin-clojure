@@ -1,18 +1,26 @@
 package com.simplify.java17.book;
 
+import com.simplify.java17.book.Book.FictionBook;
+import com.simplify.java17.book.Book.ProgrammingBook;
+import com.simplify.java17.book.Book.PsychologicalBook;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
+import static java.util.stream.Collectors.joining;
 
 @Service
 public class BookParser {
+
+    private final Function<String, String[]> splitByComma = s -> s.split(",");
+    private final UnaryOperator<String> intoOneLiner = s -> s.stripIndent().replace("\n", "");
 
     public enum CsvColumns {
         TITLE, AUTHOR, PAGES, CATEGORY
@@ -22,86 +30,65 @@ public class BookParser {
         fiction, programming, psychological
     }
 
-    public String convertCsvToJson(String inputCsv, String outputJson) {
-
-        String csvLine;
-        var json = "[";
-
-        try (var csvReader = new BufferedReader(new FileReader(inputCsv));
-             var jsonWriter = new BufferedWriter(new FileWriter(outputJson))) {
-
-            while ((csvLine = csvReader.readLine()) != null) {
-                json = createJsonRecord(csvLine, json);
-            }
-            json = json.substring(0, json.length() - 1) + "]";
-
-            jsonWriter.write(json);
+    public String convertCsvToJson(Path inputCsv, Path outputJson) {
+        try (var csvReader = Files.newBufferedReader(inputCsv)) {
+            return csvReader
+                .lines()
+                .map(splitByComma)
+                .map(Arrays::asList)
+                .map(this::createJsonRecord)
+                .collect(joining(",", "[", "]"));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            // Not the best idea, but works.
+          throw new RuntimeException(e);
         }
-
-        return json.replace("\n", "");
     }
 
+    private String createJsonRecord(List<String> csvFields) {
+        var ratings = csvFields.subList(CsvColumns.CATEGORY.ordinal() + 1, csvFields.size());
 
-    private String createJsonRecord(String csvLine, String json) {
-        String[] csvFields;
-        csvFields = csvLine.split(",");
+        var averageRate = ratings.stream()
+            .mapToDouble(Double::parseDouble)
+            .summaryStatistics()
+            .getAverage();
 
-        var title = csvFields[CsvColumns.TITLE.ordinal()];
-        var author = csvFields[CsvColumns.AUTHOR.ordinal()];
-        var pages = Integer.parseInt(csvFields[CsvColumns.PAGES.ordinal()]);
-        var category = Category.valueOf(csvFields[CsvColumns.CATEGORY.ordinal()]);
-        var karma = 0;
+        var title = csvFields.get(CsvColumns.TITLE.ordinal());
+        var author = csvFields.get(CsvColumns.AUTHOR.ordinal());
+        var pages = Integer.parseInt(csvFields.get(CsvColumns.PAGES.ordinal()));
+        var category = Category.valueOf(csvFields.get(CsvColumns.CATEGORY.ordinal()));
+
+        record BookWithKarma(int karma, Book book) {
+        }
 
         var book = switch (category) {
-            case fiction -> {
-                karma = 25;
-                yield new FictionBook(title, author);
-            }
-            case programming -> {
-                karma = 40;
-                yield new ProgrammingBook(title, author);
-            }
-            case psychological -> {
-                karma = 30;
-                yield new PsychologicalBook(title, author);
-            }
+            case fiction -> new BookWithKarma(25, new FictionBook(title, author));
+            case programming -> new BookWithKarma(40, new ProgrammingBook(title, author));
+            case psychological -> new BookWithKarma(30, new PsychologicalBook(title, author));
         };
 
-        json += """
-                {"title":"%s",
-                "author":"%s",
-                "pages":%s,
-                "karma":%s,
-                "eBook":%s,
-                "rate":%s,
-                "category":"%s"},""".formatted(title, author, pages,
-                karma, BookInOReally.available(book), getRate(csvFields), category);
-        return json;
-    }
+        var formattedRate = String.format(Locale.ENGLISH, "%.2f", averageRate);
 
-    private boolean isNumeric(String str) {
-        if (str == null) {
-            return false;
-        }
-        try {
-            double d = Double.parseDouble(str);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    private BigDecimal getRate(String[] csvFields) {
-
-        var sum = Arrays.stream(csvFields)
-                .filter(this::isNumeric)
-                .mapToDouble(Double::valueOf)
-                .filter(e -> e <= 5 && e >= 0)
-                .sum();
-        return new BigDecimal(sum / 3).setScale(2, RoundingMode.HALF_UP);
+        return """
+            {
+            "title":"%s",
+            "author":"%s",
+            "pages":%s,
+            "karma":%s,
+            "eBook":%s,
+            "rate":%s,
+            "category":"%s"
+            }
+            """
+            .formatted(
+                book.book().title(),
+                book.book().author(),
+                pages,
+                book.karma(),
+                BookInOReally.available(book.book()),
+                formattedRate,
+                category
+            ).transform(intoOneLiner);
     }
 
 }

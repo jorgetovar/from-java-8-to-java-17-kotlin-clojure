@@ -1,8 +1,8 @@
 package com.simplify.java8.book;
 
 public class Book {
-    String title;
-    String author;
+    private String title;
+    private String author;
 
     public Book(String title, String author) {
         this.title = title;

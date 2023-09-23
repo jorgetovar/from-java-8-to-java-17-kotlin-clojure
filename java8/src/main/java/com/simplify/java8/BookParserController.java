@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @RestController
 public class BookParserController {
 
@@ -17,7 +20,7 @@ public class BookParserController {
 
     @GetMapping("/csv-to-json")
     public BookResponse convertCsvToJson(@RequestParam String inputCsv, @RequestParam String outputJson) {
-        return new BookResponse(bookParser.convertCsvToJson(inputCsv, outputJson), 1.0d);
+        return new BookResponse(bookParser.convertCsvToJson(Paths.get(inputCsv), Paths.get(outputJson)), 1.0d);
     }
 
 }
