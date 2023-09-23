@@ -2,34 +2,47 @@ package com.simplify.java17;
 
 import com.simplify.java17.book.BookParser;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.UnaryOperator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 class Java17ApplicationTests {
 
-    @Test
-    public void testConvertCsvToJson_WhenIsAProgrammingBook() {
+    @InjectMocks
+    private BookParser bookParser;
 
+    private static final Path RESOURCES_PATH = Paths.get("src/test/resources");
+
+    @Test
+    void testConvertCsvToJson_WhenIsAProgrammingBook() {
         var expected = """
-            [{"title":"Code Complete",
+            [
+            {"title":"Code Complete",
             "author":"Steve McConnell",
             "pages":960,
             "karma":40,
             "eBook":true,
             "rate":3.83,
-            "category":"programming"}]
-            """.replace("\n", "");;
-        var currentRelativePath = Paths.get("src/test/resources");
-        var actual = new BookParser().convertCsvToJson(currentRelativePath + "/programming-test.csv",
-                currentRelativePath + "/programming-test.json");
+            "category":"programming"}
+            ]
+            """.transform(intoOneLiner);
+
+        var actual = bookParser.convertCsvToJson(RESOURCES_PATH.resolve("programming-test.csv"),
+            RESOURCES_PATH.resolve("programming-test.json"));
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void testConvertCsvToJson_WhenIsAFictionBook() {
+    private final UnaryOperator<String> intoOneLiner = s -> s.stripIndent().replace("\n", "");
 
+    @Test
+    void testConvertCsvToJson_WhenIsAFictionBook() {
         var expected = """
             [{"title":"Book Lovers",
             "author":"Emily Henry",
@@ -38,10 +51,9 @@ class Java17ApplicationTests {
             "eBook":false,
             "rate":4.00,
             "category":"fiction"}]
-            """.replace("\n", "");;
-        var currentRelativePath = Paths.get("src/test/resources");
-        var actual = new BookParser().convertCsvToJson(currentRelativePath + "/fiction-test.csv",
-                currentRelativePath + "/fiction-test.json");
+            """.transform(intoOneLiner);
+        var actual = bookParser.convertCsvToJson(RESOURCES_PATH.resolve("fiction-test.csv"),
+            RESOURCES_PATH.resolve("fiction-test.json"));
         assertEquals(expected, actual);
     }
 

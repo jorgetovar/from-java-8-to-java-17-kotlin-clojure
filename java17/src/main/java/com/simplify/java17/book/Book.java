@@ -1,31 +1,27 @@
 package com.simplify.java17.book;
 
-public sealed class Book permits FictionBook, ProgrammingBook, PsychologicalBook {
-    String title;
-    String author;
+public sealed interface Book permits Book.FictionBook, Book.ProgrammingBook, Book.PsychologicalBook {
 
-    public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
-    }
+  String title();
 
-    public String getTitle() {
-        return title;
-    }
+  String author();
 
-    public void setTitle(String title) {
-        this.title = title;
+  record FictionBook(String title, String author) implements Book {
+    public boolean available() {
+      return false;
     }
+  }
 
-    public String getAuthor() {
-        return author;
+  record ProgrammingBook(String title, String author) implements Book {
+    public boolean exists() {
+      return true;
     }
+  }
 
-    public void setAuthor(String author) {
-        this.author = author;
+  record PsychologicalBook(String title, String author) implements Book {
+    public boolean imAAvailable() {
+      return false;
     }
+  }
+
 }
-
-
-
-
